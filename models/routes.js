@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 
 const routeSchema = new mongoose.Schema({
-    routes: Array,
+    description: String,
+    url: String,
 });
 
 module.exports = mongoose.model('Route', routeSchema)
