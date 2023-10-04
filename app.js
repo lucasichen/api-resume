@@ -26,12 +26,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Apply the unsupportedMethodHandler middleware to all routes
-app.use('/api/', unsupportedMethodHandler, routeRouter);
-app.use('/api/experience', unsupportedMethodHandler, experienceRouter);
-app.use('/api/projects', unsupportedMethodHandler, projectsRouter);
-app.use('/api/education', unsupportedMethodHandler, educationRouter);
-app.use('/api/contact', unsupportedMethodHandler, contactRouter);
-app.use('/api/resume', unsupportedMethodHandler, meRouter);
+// app.use('/api/', unsupportedMethodHandler, routeRouter);
+// app.use('/api/experience', unsupportedMethodHandler, experienceRouter);
+// app.use('/api/projects', unsupportedMethodHandler, projectsRouter);
+// app.use('/api/education', unsupportedMethodHandler, educationRouter);
+// app.use('/api/contact', unsupportedMethodHandler, contactRouter);
+// app.use('/api/resume', unsupportedMethodHandler, meRouter);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + "/public/index.html"));
