@@ -2,9 +2,11 @@ var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 const mongoose = require('mongoose');
-require('dotenv').config();
 const { unsupportedMethodHandler } = require('./middleware/easterEgg');
 const db = require('./config/connection');
+
+require('dotenv').config();
+
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => console.log("Connected to database!"));
