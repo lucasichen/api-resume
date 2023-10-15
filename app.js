@@ -28,9 +28,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(requestIp.mw());
 app.use(rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 10, // limit each IP to 10 requests per windowMs
+  windowMs: 24 * 60 * 60 * 1000, // 24 hours (1 day)
+  max: 15, // limit each IP to 10 requests per windowMs
   keyGenerator: (req, res) => {
+    console.log(req.clientIp)
     return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
   }
 }));

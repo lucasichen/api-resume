@@ -11,6 +11,10 @@
         "src": "/(.*)",
 
         "dest": "app.js"
+      },
+      {
+        "src": "/api/undefined",
+        "dest": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
       }
     ]
   }
