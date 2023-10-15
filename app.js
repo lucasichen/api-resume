@@ -28,23 +28,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(requestIp.mw());
 app.use(rateLimit({
-  windowMs: 24 * 60 * 60 * 1000, // 24 hours (1 day)
-  max: 15, // limit each IP to 10 requests per windowMs
+  windowMs: process.env.DAILY_LIMIT_TIME * 60 * 60 * 1000,
+  max: process.env.DAILY_LIMIT, // limit each IP to 10 requests per windowMs
   keyGenerator: (req, res) => {
     console.log(req.clientIp)
     return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
   },
   handler: (req, res) => {
     res.status(429).json({
-      message: 'You have exceeded the 15 requests in 24 hours limit!',
+      message: 'Stop spamming my API!!!! Blocking you >:(',
     });
   },
 }));
 // Middleware to block requests from User-Agents other than "Postman"
 app.use((req, res, next) => {
   const userAgent = req.get('User-Agent');
-
-  if (userAgent && userAgent.includes('Postman')) {
+  if (userAgent && userAgent.includes(process.env.ALLOWED_USER_AGENT)) {
     // Allow the request to continue
     next();
   } else {
