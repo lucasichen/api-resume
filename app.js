@@ -43,7 +43,11 @@ app.use(rateLimit({
 // Middleware to block requests from User-Agents other than "Postman"
 app.use((req, res, next) => {
   const userAgent = req.get('User-Agent');
-  if (userAgent && userAgent.includes(process.env.ALLOWED_USER_AGENT)) {
+  if (req.path === process.env.EXCLUDED_PATH) {
+    // Allow the request to continue for the excluded path
+    next();
+  }
+  else if (userAgent && userAgent.includes(process.env.ALLOWED_USER_AGENT)) {
     // Allow the request to continue
     next();
   } else {
