@@ -33,8 +33,27 @@ app.use(rateLimit({
   keyGenerator: (req, res) => {
     console.log(req.clientIp)
     return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
-  }
+  },
+  handler: (req, res) => {
+    res.status(429).json({
+      message: 'You have exceeded the 15 requests in 24 hours limit!',
+    });
+  },
 }));
+// Middleware to block requests from User-Agents other than "Postman"
+app.use((req, res, next) => {
+  const userAgent = req.get('User-Agent');
+
+  if (userAgent && userAgent.includes('Postman')) {
+    // Allow the request to continue
+    next();
+  } else {
+    // Block the request with a response
+    res.status(403).send('Access denied. Only Postman requests are allowed.');
+  }
+});
+
+
 // Apply the unsupportedMethodHandler middleware to all routes
 app.use('/api/', unsupportedMethodHandler, routeRouter);
 app.use('/api/experience', unsupportedMethodHandler, experienceRouter);
