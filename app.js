@@ -6,6 +6,7 @@ const requestIp = require('request-ip');
 const mongoose = require('mongoose');
 const { unsupportedMethodHandler } = require('./middleware/easterEgg');
 const db = require('./config/connection');
+import { put } from "@vercel/blob";
 
 require('dotenv').config();
 
@@ -30,8 +31,9 @@ app.use(requestIp.mw());
 app.use(rateLimit({
   windowMs: process.env.DAILY_LIMIT_TIME * 60 * 60 * 1000,
   max: process.env.DAILY_LIMIT, // limit each IP to 10 requests per windowMs
-  keyGenerator: (req, res) => {
+  keyGenerator: async (req, res) => {
     console.log(req.clientIp)
+    await put('articles/blob.txt', req, { access: 'public' });
     return req.clientIp // IP address from requestIp.mw(), as opposed to req.ip
   },
   handler: (req, res) => {
